@@ -1,0 +1,50 @@
+{
+  "packagerConfig": {
+    "asar": true,
+    "executableName": "dyad"
+  },
+  "makers": [
+    {
+      "name": "@electron-forge/maker-squirrel",
+      "config": {
+        "signWithParams": "${WIN_CERT_SHA1:+/sha1 ${WIN_CERT_SHA1} /tr http://timestamp.digicert.com /td SHA256 /fd SHA256}"
+      }
+    },
+    {
+      "name": "@electron-forge/maker-zip",
+      "platforms": ["darwin", "linux"]
+    },
+    {
+      "name": "@electron-forge/maker-deb"
+    },
+    {
+      "name": "@electron-forge/maker-rpm"
+    }
+  ],
+  "plugins": [
+    {
+      "name": "@electron-forge/plugin-vite",
+      "config": {
+        "build": [
+          { "entry": "src/main.ts", "config": "vite.main.config.ts" },
+          { "entry": "src/preload.ts", "config": "vite.preload.config.ts" }
+        ],
+        "renderer": [
+          { "name": "main_window", "config": "vite.renderer.config.ts" }
+        ]
+      }
+    },
+    {
+      "name": "@electron-forge/plugin-fuses",
+      "config": {
+        "version": 1,
+        "fuses": {
+          "RunAsNode": false,
+          "EnableCookieEncryption": true,
+          "EnableNodeOptionsEnvironmentVariable": false,
+          "EnableNodeCliInspectArguments": false
+        }
+      }
+    }
+  ]
+}
