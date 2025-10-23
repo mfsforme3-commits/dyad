@@ -13,8 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Sparkles, Info } from "lucide-react";
 import { useSettings } from "@/hooks/useSettings";
-import { IpcClient } from "@/ipc/ipc_client";
-import { hasDyadProKey, type UserSettings } from "@/lib/schemas";
+import { type UserSettings } from "@/lib/schemas";
 
 export function ProModeSelector() {
   const { settings, updateSettings } = useSettings();
@@ -58,8 +57,9 @@ export function ProModeSelector() {
     });
   };
 
-  const hasProKey = settings ? hasDyadProKey(settings) : false;
-  const proModeTogglable = hasProKey && Boolean(settings?.enableDyadPro);
+  // MODIFIED: Always allow Pro features - removed restrictions
+  const hasProKey = true; // Always true
+  const proModeTogglable = true; // Always true
 
   return (
     <Popover>
@@ -83,31 +83,21 @@ export function ProModeSelector() {
           <div className="space-y-1">
             <h4 className="font-medium flex items-center gap-1.5">
               <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-primary font-medium">Dyad Pro</span>
+              <span className="text-primary font-medium">Dyad Pro (Free)</span>
             </h4>
             <div className="h-px bg-gradient-to-r from-primary/50 via-primary/20 to-transparent" />
           </div>
-          {!hasProKey && (
-            <div className="text-sm text-center text-muted-foreground">
-              <a
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-primary/30 bg-primary/10 px-3 py-2 text-sm font-medium text-primary shadow-sm transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                onClick={() => {
-                  IpcClient.getInstance().openExternalUrl(
-                    "https://dyad.sh/pro#ai",
-                  );
-                }}
-              >
-                Unlock Pro modes
-              </a>
-            </div>
-          )}
+          {/* REMOVED: The "Unlock Pro modes" section */}
+          <div className="text-sm text-center text-green-600 font-medium">
+            🎉 All Pro features are now free!
+          </div>
           <div className="flex flex-col gap-5">
             <SelectorRow
               id="pro-enabled"
               label="Enable Dyad Pro"
               description="Use Dyad Pro AI credits"
               tooltip="Uses Dyad Pro AI credits for the main AI model and Pro modes."
-              isTogglable={hasProKey}
+              isTogglable={true}
               settingEnabled={Boolean(settings?.enableDyadPro)}
               toggle={toggleProEnabled}
             />
@@ -116,7 +106,7 @@ export function ProModeSelector() {
               label="Web Search"
               description="Search the web for information"
               tooltip="Uses the web to search for information"
-              isTogglable={proModeTogglable}
+              isTogglable={true}
               settingEnabled={Boolean(settings?.enableProWebSearch)}
               toggle={toggleWebSearch}
             />
@@ -125,12 +115,12 @@ export function ProModeSelector() {
               label="Turbo Edits"
               description="Makes file edits faster and cheaper"
               tooltip="Uses a faster, cheaper model to generate full file updates."
-              isTogglable={proModeTogglable}
+              isTogglable={true}
               settingEnabled={Boolean(settings?.enableProLazyEditsMode)}
               toggle={toggleLazyEdits}
             />
             <SmartContextSelector
-              isTogglable={proModeTogglable}
+              isTogglable={true}
               settings={settings}
               onValueChange={handleSmartContextChange}
             />
@@ -171,7 +161,11 @@ function SelectorRow({
           <Tooltip>
             <TooltipTrigger asChild>
               <Info
-                className={`h-4 w-4 cursor-help ${!isTogglable ? "text-muted-foreground/50" : "text-muted-foreground"}`}
+                className={`h-4 w-4 cursor-help ${
+                  !isTogglable
+                    ? "text-muted-foreground/50"
+                    : "text-muted-foreground"
+                }`}
               />
             </TooltipTrigger>
             <TooltipContent side="right" className="max-w-72">
@@ -179,7 +173,11 @@ function SelectorRow({
             </TooltipContent>
           </Tooltip>
           <p
-            className={`text-xs ${!isTogglable ? "text-muted-foreground/50" : "text-muted-foreground"} max-w-55`}
+            className={`text-xs ${
+              !isTogglable
+                ? "text-muted-foreground/50"
+                : "text-muted-foreground"
+            } max-w-55`}
           >
             {description}
           </p>
@@ -232,7 +230,11 @@ function SmartContextSelector({
           <Tooltip>
             <TooltipTrigger asChild>
               <Info
-                className={`h-4 w-4 cursor-help ${!isTogglable ? "text-muted-foreground/50" : "text-muted-foreground"}`}
+                className={`h-4 w-4 cursor-help ${
+                  !isTogglable
+                    ? "text-muted-foreground/50"
+                    : "text-muted-foreground"
+                }`}
               />
             </TooltipTrigger>
             <TooltipContent side="right" className="max-w-72">
@@ -240,7 +242,11 @@ function SmartContextSelector({
             </TooltipContent>
           </Tooltip>
           <p
-            className={`text-xs ${!isTogglable ? "text-muted-foreground/50" : "text-muted-foreground"}`}
+            className={`text-xs ${
+              !isTogglable
+                ? "text-muted-foreground/50"
+                : "text-muted-foreground"
+            }`}
           >
             Optimizes your AI's code context
           </p>
