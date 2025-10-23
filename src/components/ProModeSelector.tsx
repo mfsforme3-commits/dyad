@@ -62,10 +62,6 @@ export function ProModeSelector() {
     });
   };
 
-  // MODIFIED: Always allow Pro features - removed restrictions
-  const hasProKey = true; // Always true
-  const proModeTogglable = true; // Always true
-
   return (
     <Popover>
       <Tooltip>
@@ -92,7 +88,6 @@ export function ProModeSelector() {
             </h4>
             <div className="h-px bg-gradient-to-r from-primary/50 via-primary/20 to-transparent" />
           </div>
-          {/* REMOVED: The "Unlock Pro modes" section */}
           <div className="text-sm text-center text-green-600 font-medium">
             🎉 All Pro features are now free!
           </div>
@@ -102,7 +97,7 @@ export function ProModeSelector() {
               label="Enable Dyad Pro"
               description="Use Dyad Pro AI credits"
               tooltip="Uses Dyad Pro AI credits for the main AI model and Pro modes."
-              isTogglable={true}
+              isTogglable
               settingEnabled={Boolean(settings?.enableDyadPro)}
               toggle={toggleProEnabled}
             />
@@ -111,7 +106,7 @@ export function ProModeSelector() {
               label="Web Search"
               description="Search the web for information"
               tooltip="Uses the web to search for information"
-              isTogglable={true}
+              isTogglable
               settingEnabled={Boolean(settings?.enableProWebSearch)}
               toggle={toggleWebSearch}
             />
@@ -120,12 +115,12 @@ export function ProModeSelector() {
               label="Turbo Edits"
               description="Makes file edits faster and cheaper"
               tooltip="Uses a faster, cheaper model to generate full file updates."
-              isTogglable={true}
+              isTogglable
               settingEnabled={Boolean(settings?.enableProLazyEditsMode)}
               toggle={toggleLazyEdits}
             />
             <SmartContextSelector
-              isTogglable={true}
+              isTogglable
               settings={settings}
               onValueChange={handleSmartContextChange}
             />
@@ -156,44 +151,20 @@ function SelectorRow({
   return (
     <div className="flex items-center justify-between">
       <div className="space-y-1.5">
-        <Label
-          htmlFor={id}
-          className={!isTogglable ? "text-muted-foreground/50" : ""}
-        >
-          {label}
-        </Label>
+        <Label htmlFor={id}>{label}</Label>
         <div className="flex items-center gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Info
-                className={`h-4 w-4 cursor-help ${
-                  !isTogglable
-                    ? "text-muted-foreground/50"
-                    : "text-muted-foreground"
-                }`}
-              />
+              <Info className="h-4 w-4 cursor-help text-muted-foreground" />
             </TooltipTrigger>
             <TooltipContent side="right" className="max-w-72">
               {tooltip}
             </TooltipContent>
           </Tooltip>
-          <p
-            className={`text-xs ${
-              !isTogglable
-                ? "text-muted-foreground/50"
-                : "text-muted-foreground"
-            } max-w-55`}
-          >
-            {description}
-          </p>
+          <p className="text-xs text-muted-foreground max-w-55">{description}</p>
         </div>
       </div>
-      <Switch
-        id={id}
-        checked={isTogglable ? settingEnabled : false}
-        onCheckedChange={toggle}
-        disabled={!isTogglable}
-      />
+      <Switch id={id} checked={isTogglable ? settingEnabled : false} onCheckedChange={toggle} disabled={!isTogglable} />
     </div>
   );
 }
@@ -231,33 +202,17 @@ function SmartContextSelector({
   return (
     <div className="space-y-3">
       <div className="space-y-1.5">
-        <Label className={!isTogglable ? "text-muted-foreground/50" : ""}>
-          Smart Context
-        </Label>
+        <Label>Smart Context</Label>
         <div className="flex items-center gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Info
-                className={`h-4 w-4 cursor-help ${
-                  !isTogglable
-                    ? "text-muted-foreground/50"
-                    : "text-muted-foreground"
-                }`}
-              />
+              <Info className="h-4 w-4 cursor-help text-muted-foreground" />
             </TooltipTrigger>
             <TooltipContent side="right" className="max-w-72">
               Improve efficiency and save credits working on large codebases.
             </TooltipContent>
           </Tooltip>
-          <p
-            className={`text-xs ${
-              !isTogglable
-                ? "text-muted-foreground/50"
-                : "text-muted-foreground"
-            }`}
-          >
-            Optimizes your AI's code context
-          </p>
+          <p className="text-xs text-muted-foreground">Optimizes your AI's code context</p>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-1 rounded-md border border-input p-1">
