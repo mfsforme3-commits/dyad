@@ -31,7 +31,7 @@ export function ProModeSelector() {
   };
 
   const handleSmartContextChange = (
-    newValue: "off" | "conservative" | "balanced",
+    newValue: "off" | "conservative" | "balanced" | "v3",
   ) => {
     if (newValue === "off") {
       updateSettings({
@@ -47,6 +47,11 @@ export function ProModeSelector() {
       updateSettings({
         enableProSmartFilesContextMode: true,
         proSmartContextOption: "balanced",
+      });
+    } else if (newValue === "v3") {
+      updateSettings({
+        enableProSmartFilesContextMode: true,
+        proSmartContextOption: "v3",
       });
     }
   };
@@ -200,10 +205,10 @@ function SmartContextSelector({
 }: {
   isTogglable: boolean;
   settings: UserSettings | null;
-  onValueChange: (value: "off" | "conservative" | "balanced") => void;
+  onValueChange: (value: "off" | "conservative" | "balanced" | "v3") => void;
 }) {
   // Determine current value based on settings
-  const getCurrentValue = (): "off" | "conservative" | "balanced" => {
+  const getCurrentValue = (): "off" | "conservative" | "balanced" | "v3" => {
     if (!settings?.enableProSmartFilesContextMode) {
       return "off";
     }
@@ -212,6 +217,9 @@ function SmartContextSelector({
     }
     if (settings?.proSmartContextOption === "conservative") {
       return "conservative";
+    }
+    if (settings?.proSmartContextOption === "v3") {
+      return "v3";
     }
     // Keep in sync with getModelClient in get_model_client.ts
     // If enabled but no option set (undefined/falsey), it's balanced
@@ -252,13 +260,13 @@ function SmartContextSelector({
           </p>
         </div>
       </div>
-      <div className="inline-flex rounded-md border border-input">
+      <div className="grid grid-cols-2 gap-1 rounded-md border border-input p-1">
         <Button
           variant={currentValue === "off" ? "default" : "ghost"}
           size="sm"
           onClick={() => onValueChange("off")}
           disabled={!isTogglable}
-          className="rounded-r-none border-r border-input h-8 px-3 text-xs flex-shrink-0"
+          className="h-8 px-3 text-xs"
         >
           Off
         </Button>
@@ -267,7 +275,7 @@ function SmartContextSelector({
           size="sm"
           onClick={() => onValueChange("conservative")}
           disabled={!isTogglable}
-          className="rounded-none border-r border-input h-8 px-3 text-xs flex-shrink-0"
+          className="h-8 px-3 text-xs"
         >
           Conservative
         </Button>
@@ -276,9 +284,18 @@ function SmartContextSelector({
           size="sm"
           onClick={() => onValueChange("balanced")}
           disabled={!isTogglable}
-          className="rounded-l-none h-8 px-3 text-xs flex-shrink-0"
+          className="h-8 px-3 text-xs"
         >
           Balanced
+        </Button>
+        <Button
+          variant={currentValue === "v3" ? "default" : "ghost"}
+          size="sm"
+          onClick={() => onValueChange("v3")}
+          disabled={!isTogglable}
+          className="h-8 px-3 text-xs"
+        >
+          Power (Beta)
         </Button>
       </div>
     </div>
