@@ -265,12 +265,14 @@ export const UserSettingsSchema = z.object({
  */
 export type UserSettings = z.infer<typeof UserSettingsSchema>;
 
+// MODIFIED: Always return true to enable Pro features for everyone
 export function isDyadProEnabled(settings: UserSettings): boolean {
-  return settings.enableDyadPro === true && hasDyadProKey(settings);
+  return true; // Always enable Pro features
 }
 
+// MODIFIED: Always return true to bypass Pro key requirement
 export function hasDyadProKey(settings: UserSettings): boolean {
-  return !!settings.providerSettings?.auto?.apiKey?.value;
+  return true; // Always have Pro access
 }
 
 // Define interfaces for the props
