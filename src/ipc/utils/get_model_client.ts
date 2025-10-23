@@ -81,6 +81,14 @@ export async function getModelClient(
     // so we do a nullish and not a truthy check here.
     if (providerConfig.gatewayPrefix != null || dyadEngineUrl) {
       const enableSmartFilesContext = settings.enableProSmartFilesContextMode;
+
+      // Map new "v3" option to a supported engine value to satisfy TS and engine expectations.
+      // Keep in sync with ProModeSelector and schemas.ts
+      const smartContextMode =
+        settings.proSmartContextOption === "v3"
+          ? "balanced"
+          : settings.proSmartContextOption ?? "balanced";
+
       const provider = createDyadEngine({
         apiKey: dyadApiKey,
         baseURL: dyadEngineUrl ?? "https://engine.dyad.sh/v1",
@@ -90,9 +98,9 @@ export async function getModelClient(
             settings.selectedChatMode === "ask"
               ? false
               : settings.enableProLazyEditsMode,
-          enableSmartFilesContext,
+          enableSmartFilesContext: enableSmartFilesContext,
           // Keep in sync with getCurrentValue in ProModeSelector.tsx
-          smartContextMode: settings.proSmartContextOption ?? "balanced",
+          smartContextMode,
           enableWebSearch: settings.enableProWebSearch,
         },
         settings,
