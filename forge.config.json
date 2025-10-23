@@ -26,11 +26,11 @@
       "name": "@electron-forge/plugin-vite",
       "config": {
         "build": [
-          { "entry": "src/main.ts", "config": "vite.main.config.ts" },
-          { "entry": "src/preload.ts", "config": "vite.preload.config.ts" }
+          { "entry": "src/main.ts", "config": "vite.main.config.mts" },
+          { "entry": "src/preload.ts", "config": "vite.preload.config.mts" }
         ],
         "renderer": [
-          { "name": "main_window", "config": "vite.renderer.config.ts" }
+          { "name": "main_window", "config": "vite.renderer.config.mts" }
         ]
       }
     },
